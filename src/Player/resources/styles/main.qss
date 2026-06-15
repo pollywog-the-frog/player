@@ -1,0 +1,71 @@
+QMainWindow {
+    background-color: rgb(18, 18, 18);
+
+}
+
+QLabel {
+    color: rgb(128, 128, 128);
+}
+
+QPushButton {
+    background-color: rgb(30, 30, 30);
+    border-radius: 10px;
+    padding: 35px;
+    color: rgb(112, 112, 112);
+}
+
+QPushButton#play_button {
+    border-radius: 24px;
+    padding: 15px;
+}
+
+QPushButton:hover {
+    background-color: rgb(37, 37, 37);
+    color: rgb(119, 119, 119);
+}
+
+
+NavButton {
+    border-radius: 22px;
+}
+
+PlayPauseButton {
+    background-color: rgba(30, 30, 30, 0.8);
+    border-radius: 35px;
+    padding: none;
+}
+
+PlayPauseButton:hover {
+    background-color: rgba(37, 37, 37, 0.8);
+}
+
+QLineEdit {
+    background: rgb(30, 30, 30);
+    border-radius: 30px;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+}
+
+QSlider:horizontal {
+    height: 16px;
+}
+QSlider::groove:horizontal {
+    background: rgb(30, 30, 30);
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+}
+
+QSlider::handle:horizontal {
+    background: rgb(255, 255, 255);
+    height: 16px;
+    width: 16px;
+    border-radius: 8px;
+    border: none;
+    margin: -4px 0;
+}
+
+QSlider::sub-page:horizontal {
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+}

@@ -1,0 +1,27 @@
+[project]
+name = "player"
+version = "0.1.0"
+description = "Stream media from platforms like Youtube"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datetime>=6.0",
+    "numpy>=2.4.6",
+    "pyopengl>=3.1.10",
+    "pyopengl-accelerate>=3.1.10",
+    "pyside6>=6.11.1",
+    "python-dotenv>=1.2.2",
+    "python-mpv>=1.0.8",
+    "rich>=15.0.0",
+    "yt-dlp[default]",
+]
+
+[tool.uv]
+package = true
+
+[tool.uv.sources]
+yt-dlp = { git = "https://github.com/yt-dlp/yt-dlp.git" }
+
+[project.scripts]
+Player = "Player.main:main"
+

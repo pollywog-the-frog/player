@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+read hex
+
+for file in *.svg; do
+	sed -i  \
+	-e "s/fill=\"[^\"n]*\"/fill=\"$hex\"/g" \
+	-e "s/stroke=\"[^\"]*\"/stroke=\"$hex\"/g" \
+	"$file";
+done
+
+echo 'All done!'
