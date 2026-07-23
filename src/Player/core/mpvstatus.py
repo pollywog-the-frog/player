@@ -17,6 +17,7 @@ class MpvStatus():
             'pause',
             'volume',
             'core-idle',
+            'idle-active',
             ]
         self._setup_observers(_observe)
 
@@ -31,6 +32,10 @@ class MpvStatus():
     @property
     def playing(self) -> bool:
         return not self._player.pause and not self._player.core_idle
+    
+    @property
+    def file_loaded(self) -> bool:
+        return not self._player.idle_active
 
     @property
     def pause(self) -> bool:

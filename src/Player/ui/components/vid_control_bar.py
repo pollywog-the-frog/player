@@ -5,16 +5,17 @@ from datetime import timedelta
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSlider
 from PySide6.QtCore import Qt, Slot
 
-from Player.core.QtMpvStatus import QtMpvStatus
+from Player.core.qtmpvstatus import QtMpvStatus
 from Player.core.mediastream import MediaStream
+from Player.ui.components.vid_slider import VideoSlider
 
 class VideoControlBar(QWidget):
-    def __init__(self, mpv_instance: MPV, status: QtMpvStatus, stream: MediaStream, parent: QWidget | None = None):
-        super().__init__(parent=parent)
 
-        self._player = mpv_instance
+    def __init__(self, status: QtMpvStatus, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         self._status = status
-        self._stream = stream
+        self._stream = None
 
         # Defin v_layout
         v_layout = QVBoxLayout(self)
@@ -23,24 +24,29 @@ class VideoControlBar(QWidget):
         self.title = QLabel(self._stream.title if hasattr(self._stream, 'title') else "No title available")
 
         # Define slider
-        self.slider = QSlider(Qt.Horizontal, self)
-        self.slider.setMaximum(10**8)
+        self.slider = VideoSlider(parent=self, orientation=Qt.Horizontal)
 
         # Connect signals
         self._status.percent_posChanged.connect(self.setSliderValue)
         self._status.time_posChanged.connect(self.updateStatusLabel)
 
         # Define status label
-        self.status_label = QLabel("0.00/0.00")
+        self.status_label = QLabel("00:00:00.00/--:--:--")
 
 
         v_layout.addWidget(self.title)
         v_layout.addWidget(self.slider)
         v_layout.addWidget(self.status_label)
+        
+        self.setAttribute(Qt.WA_StyledBackground, True)
 
     @Slot(float)
     def setSliderValue(self, val: float) -> None:
-        self.slider.setValue(int(val * 10**6))
+        if self.slider.isSliderDown():
+            return
+        self.slider.blockSignals(True)
+        self.slider.setValue(int(val * (self.slider.maximum()/10**2)))
+        self.slider.blockSignals(False)
 
     @Slot(float)
     def updateStatusLabel(self, val: float):
@@ -50,4 +56,4 @@ class VideoControlBar(QWidget):
     def initializeMetaData(self, stream: MediaStream) -> None:
         self._stream = stream
         self.title.setText(self._stream.title if hasattr(self._stream, 'title') else "No title available")
-        self.status_label.setText(f"0.00/{timedelta(seconds=self._stream.duration) if hasattr(self._stream, "duration") else "--:--:--"}")
+        self.status_label.setText(f"00:00:00.00/{timedelta(seconds=self._stream.duration) if hasattr(self._stream, "duration") else "--:--:--"}")

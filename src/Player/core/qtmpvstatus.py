@@ -1,10 +1,8 @@
-import threading
-
 from mpv import MPV
 
-from PySide6.QtCore import QObject, Signal, Slot
+from PySide6.QtCore import QObject, Signal
 
-from Player.core.MpvStatus import MpvStatus
+from Player.core.mpvstatus import MpvStatus
 
 class QtMpvStatus(QObject):
 
@@ -12,6 +10,7 @@ class QtMpvStatus(QObject):
     pauseChanged = Signal(bool)
     time_posChanged = Signal(float)
     percent_posChanged = Signal(float)
+    file_loadedChanged = Signal(bool)
 
     def __init__(self, mpv_instance: MPV, parent=None):
         super().__init__(parent)
@@ -23,10 +22,13 @@ class QtMpvStatus(QObject):
         
 
     def _on_change(self, name, val) -> None:
-        print(f"\033[94m{name}, {val}\033[0m")
+        #print(f"\033[94m{name}, {val}\033[0m")
         if name == 'pause' or name == 'core-idle':
+            print('\033[92mplaying changed\033[0m')
             self.playingChanged.emit(self._status.playing)
         elif name == 'percent-pos':
             self.percent_posChanged.emit(val)
         elif name == 'time-pos':
             self.time_posChanged.emit(val)
+        elif name == 'idle-active':
+            self.file_loadedChanged.emit(not val)

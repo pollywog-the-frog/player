@@ -5,6 +5,7 @@ QMainWindow {
 
 QLabel {
     color: rgb(128, 128, 128);
+    background: transparent;
 }
 
 QPushButton {
@@ -48,6 +49,7 @@ QLineEdit {
 
 QSlider:horizontal {
     height: 16px;
+    background: transparent;
 }
 QSlider::groove:horizontal {
     background: rgb(30, 30, 30);
@@ -68,4 +70,13 @@ QSlider::handle:horizontal {
 QSlider::sub-page:horizontal {
     background: rgb(255, 255, 255);
     border-radius: 4px;
+}
+
+VideoControlBar {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(24, 24, 24, 0.1), stop:0.1 rgba(24, 24, 24, 0.5), stop:0.5 rgb(24, 24, 24), stop:0.9 rgba(24, 24, 24, 0.5), stop:1 rgba(24, 24, 24, 0.1));
+}
+
+QFrame#display_frame[is_min_size='true'] {
+    border: 2px solid white;
+    border-radius: 20px;
 }

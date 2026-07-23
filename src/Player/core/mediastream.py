@@ -14,6 +14,7 @@ class MediaStream:
             },
             'verbose' : True,
             'quiet' : False,
+            'cookiesfrombrowser' : ('firefox',),
         }
         self.url = url
         with YoutubeDL(ydl_opts) as ydl:

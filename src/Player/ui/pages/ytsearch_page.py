@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QStackedWidget, QMainWindow
 
-from Player.ui.components.NavBar import NavBar
+from Player.ui.components.nav_bar import NavBar
 
 class YTSearchPage(QWidget):
     def __init__(self, stack: QStackedWidget, main_window: QMainWindow):
@@ -8,4 +8,3 @@ class YTSearchPage(QWidget):
 
         self.stack = stack
         self.main_window = main_window
-        nav_bar = NavBar(stack=self.stack, main_window=self.main_window, parent=self)

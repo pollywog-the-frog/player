@@ -4,19 +4,18 @@ import threading
 
 from mpv import MPV
 
-from PySide6.QtWidgets import QWidget, QPushButton
+from PySide6.QtWidgets import QWidget, QMainWindow, QPushButton
 from PySide6.QtCore import Signal, Slot, QSize
 from PySide6.QtGui import QIcon
 
-from Player.core.MpvStatus import MpvStatus
-from Player.core.QtMpvStatus import QtMpvStatus
+from Player.core.mpvstatus import MpvStatus
+from Player.core.qtmpvstatus import QtMpvStatus
 
 class PlayPauseButton(QPushButton):
 
-    def __init__(self, mpv_instance: MPV, status: QtMpvStatus, parent: QWidget | None = None):
-        super().__init__(parent=parent)
+    def __init__(self, main_window: QMainWindow, status: QtMpvStatus, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        self._player = mpv_instance
         self._status = status
         self._status.playingChanged.connect(self.update_icon)
 
@@ -26,11 +25,7 @@ class PlayPauseButton(QPushButton):
 
         self.setIconSize(QSize(40,40))
         self.setFixedSize(QSize(70,70))
-        self.clicked.connect(self.play_pause)
-
-
-    def play_pause(self) -> None:
-        self._player.command('cycle', 'pause')
+        self.clicked.connect(main_window.controls.cycle_pause)
 
 
     @Slot(bool)

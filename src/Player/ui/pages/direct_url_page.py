@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QStackedWidget, QPushButton, QMainWindow, QSizePolicy
 
 from Player.core.mediastream import MediaStream
-from Player.ui.components.NavBar import NavBar
 
 class DirectURLPage(QWidget):
     def __init__(self, stack: QStackedWidget, main_window: QMainWindow):
@@ -51,9 +50,6 @@ class DirectURLPage(QWidget):
         v_layout.addWidget(self.input)
         v_layout.addWidget(button_container)
 
-        # Add NavBar on top of it all
-        nav_bar = NavBar(stack=self.stack, main_window=self.main_window, parent=self)
-
         # Set v_layout margins
         v_layout.setContentsMargins(50,250,50,50)
 
@@ -61,11 +57,14 @@ class DirectURLPage(QWidget):
         # Get input
         url = self.input.text()
 
-        # Set stack widget to player_page
-        self.stack.setCurrentWidget(self.main_window.player_page)
+        # Define stream
+        stream = MediaStream(url)
+        
+        # Initialize media on display and controls
+        self.main_window.display.initalize_media(stream)
+        self.main_window.controls.initalize_media(stream)
 
-        # Initialize media on player_page
-        self.main_window.player_page.initalize_media(MediaStream(url))
+        self.main_window.cycle_display_show(True)
 
         # Start playing
-        getattr(self.main_window.player_page, f"play_{option}")()
+        getattr(self.main_window.controls, f"play_{option}")()

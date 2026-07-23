@@ -23,5 +23,5 @@ package = true
 yt-dlp = { git = "https://github.com/yt-dlp/yt-dlp.git" }
 
 [project.scripts]
-Player = "Player.main:main"
+Player = "Player.__main__:main"
 

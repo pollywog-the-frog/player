@@ -2,7 +2,7 @@ import os
 
 from PySide6.QtWidgets import QWidget, QStackedWidget, QMainWindow
 
-from Player.ui.components.NavButton import NavButton
+from Player.ui.components.nav_button import NavButton
 
 class SearchButton(NavButton):
     def __init__(self, stack: QStackedWidget, main_window: QMainWindow,  parent: QWidget | None = None):

@@ -1,0 +1,1 @@
+Gui app to stream media from youtube.  I'll finish this README later.
