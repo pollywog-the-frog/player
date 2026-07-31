@@ -5,4 +5,4 @@ A desktop app written in Python which streams media from YouTube via the [yt-dlp
 ## Usage
 We'll get to this ... eventually. (Not like you'll really need it, it is a **GUI app** you know.)
 ## Troubleshooting
-Any problems at this point are still pretty much just bugs.  So we'll finish this section when we are past the bug-fix stage. 
+Any problems at this point are probable on our todo.  So we'll finish this section when we are past the bug-fix stage. 
