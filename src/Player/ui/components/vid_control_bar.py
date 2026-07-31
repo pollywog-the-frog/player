@@ -11,7 +11,7 @@ from Player.ui.components.vid_slider import VideoSlider
 
 class VideoControlBar(QWidget):
 
-    def __init__(self, status: QtMpvStatus, *args, **kwargs):
+    def __init__(self, status: QtMpvStatus, main_window, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._status = status
@@ -24,7 +24,7 @@ class VideoControlBar(QWidget):
         self.title = QLabel(self._stream.title if hasattr(self._stream, 'title') else "No title available")
 
         # Define slider
-        self.slider = VideoSlider(parent=self, orientation=Qt.Horizontal)
+        self.slider = VideoSlider(main_window=main_window, parent=self, orientation=Qt.Horizontal)
 
         # Connect signals
         self._status.percent_posChanged.connect(self.setSliderValue)

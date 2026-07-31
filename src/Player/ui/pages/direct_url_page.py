@@ -61,7 +61,7 @@ class DirectURLPage(QWidget):
         stream = MediaStream(url)
         
         # Initialize media on display and controls
-        self.main_window.display.initalize_media(stream)
+        self.main_window.display_frame.display.initalize_media(stream)
         self.main_window.controls.initalize_media(stream)
 
         self.main_window.cycle_display_show(True)

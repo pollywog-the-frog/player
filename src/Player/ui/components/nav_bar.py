@@ -30,5 +30,5 @@ class NavBar(QWidget):
         self.setMinimumSize(int(home_button.maximumWidth()*4.5), int(home_button.maximumHeight()*1.5))
 
     def conditionalHide(self) -> None:
-        if self.main_window.displayIsFullWindow():
+        if self.main_window.display_frame.isFullWindow():
             self.hide()

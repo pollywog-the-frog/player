@@ -21,6 +21,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Player")
         self.resize(800, 600)
+        # Set Focus policy
+        self.setFocusPolicy(Qt.StrongFocus)
 
         # import locale
         import locale
@@ -57,24 +59,18 @@ class MainWindow(QMainWindow):
         # Define the NavBar
         self.nav_bar = NavBar(stack=self.stack, main_window=self, parent=self)
 
-        # Connect buttonClicked to _cycle_display_fullwindow
-        self.nav_bar.buttonClicked.connect(self._cycle_display_fullwindow)
-
         # Define pages
         self.home_page = HomePage(stack=self.stack, main_window=self)
         self.ytsearch_page = YTSearchPage(stack=self.stack, main_window=self)
         self.direct_url_page = DirectURLPage(stack=self.stack, main_window=self)
 
         # Define display_frame
-        self.display_frame = DisplayFrame(self, parent=self)
+        self.display_frame = DisplayFrame(main_window=self, parent=self, mpv_instance=self._player)
 
-        # Define display
-        self.display = MpvDisplay(mpv_instance=self._player, parent=self.display_frame, main_window=self)
-        self.display_frame.layout().addWidget(self.display)
-        # Connect display.doubleClicked to _handle_display_double_clicked
+        # Connect necessary Signals
         self.display_frame.doubleClicked.connect(self._handle_display_double_clicked)
-
         self.qtstatus.file_loadedChanged.connect(self.cycle_display_show)
+        self.nav_bar.buttonClicked.connect(self._exit_display_fullwindow)
 
         # Add pages to stack
         self.stack.addWidget(self.home_page)
@@ -112,7 +108,6 @@ class MainWindow(QMainWindow):
         else:
             self.display_frame.hide()
 
-    @Slot()
     def _cycle_display_fullwindow(self):
         if self.display_frame.rect() == self.rect():
             self.display_frame.setGeometry(
@@ -126,6 +121,11 @@ class MainWindow(QMainWindow):
             self.nav_bar.raise_()
 
     @Slot()
+    def _exit_display_fullwindow(self):
+        if self.display_frame.isFullWindow():
+            self._cycle_display_fullwindow()
+
+    @Slot()
     def _handle_display_double_clicked(self) -> None:
         if not self.display_frame.rect() == self.rect():
             self._cycle_display_fullwindow()
@@ -134,33 +134,33 @@ class MainWindow(QMainWindow):
         elif self.display_frame.rect() == self.rect() and self.isFullScreen():
             self.showNormal()
 
-    def displayIsFullWindow(self) -> bool:
-        return self.rect() == self.display_frame.rect()
-
     def keyPressEvent(self, event):
-        if self.isFullScreen():
-            if event.key() == Qt.Key_Escape:
-                self._cycle_fullscreen()
-        elif not self.isFullScreen() and self.display_frame.rect() == self.rect():
-            if event.key() == Qt.Key_F:
-                self._cycle_fullscreen()
-
-        if event.key() == Qt.Key_Space:
-            self._controls.cycle_pause()
+        print(f"\033[96m{event.key()}\033[0m")
+        if self.isFullScreen() and event.key() == Qt.Key_Escape:
+            self._cycle_fullscreen()
+        elif not self.isFullScreen() and event.key() == Qt.Key_F:
+            self._cycle_fullscreen()
+        elif event.key() == Qt.Key_Space:
+            self.controls.cycle_pause()
+        elif event.key() == Qt.Key_Right:
+            self.controls.seek(10)
+        elif event.key() == Qt.Key_Left:
+            self.controls.seek(-10)
         else:
             return super().keyPressEvent(event)
 
     def resizeEvent(self, event: QResizeEvent):
-        rect = QRect(QPoint(0, 0), event.oldSize())
+        old_rect = QRect(QPoint(0, 0), event.oldSize())
+        new_rect = QRect(QPoint(0, 0), event.size())
         print("\033[96m\nresizeEvent was called", f"{self.rect()}\n\033[0m")
-        if self.display_frame.rect() == rect:
+        if self.display_frame.rect() == old_rect:
             print("\033[96m\nresizeEvent passed first condition\n\033[0m")
-            self.display_frame.setGeometry(self.rect())
-        elif not self.display_frame.rect() == rect:
+            self.display_frame.setGeometry(new_rect)
+        elif not self.display_frame.rect() == old_rect:
             print("\033[96m\nresizeEvent passed second condition\n\033[0m")
-            self.display.setGeometry(
-                self.width() - self.display_frame.minimumWidth() - 7,
-                self.height() - self.display_frame.minimumHeight() -7,
+            self.display_frame.setGeometry(
+                new_rect.width() - self.display_frame.minimumWidth() - 7,
+                new_rect.height() - self.display_frame.minimumHeight() -7,
                 self.display_frame.minimumWidth(),
                 self.display_frame.minimumHeight(),
             )

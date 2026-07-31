@@ -120,20 +120,6 @@ class MpvDisplay(QOpenGLWidget):
         if self.main_window.status.playing:
             self.timer.start()
         return super().mouseMoveEvent(event)
-    
-    # def mousePressEvent(self, event: QMouseEvent):
-    #     self._controls.cycle_pause()
-    #     return super().mousePressEvent(event)
-    
-    # def mouseDoubleClickEvent(self, event: QMouseEvent):
-    #     self.doubleClicked.emit()
-    #     return super().mouseDoubleClickEvent(event)
-    
-    # def keyPressEvent(self, event: QKeyEvent):
-    #     if event.key() == Qt.Key_Space:
-    #         self._controls.cycle_pause()
-    #     else:
-    #         return super().keyPressEvent(event)
         
     def resizeEvent(self, e):
         self.video_controls.setGeometry(self.rect())
@@ -192,8 +178,11 @@ class MpvControls():
     def stop(self) -> None:
         self._player.stop()
 
-    def seek(self, val) -> None:
-        self._player.command('seek', val, 'absolute-percent')
+    def seek(self, val, absolute_percent=False) -> None:
+        if absolute_percent:
+            self._player.command('seek', val, 'absolute-percent')
+        else:
+            self._player.command('seek', val, 'relative')
     
     def terminate(self) -> None:
         self._controls.terminate()
