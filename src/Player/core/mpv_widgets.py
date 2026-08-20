@@ -43,23 +43,20 @@ class MpvDisplay(QOpenGLWidget):
         # Set mouse tracking
         self.setMouseTracking(True)
 
-        # Set Focus policy
-        self.setFocusPolicy(Qt.StrongFocus)
-
         # Set update behavior
         self.setUpdateBehavior(QOpenGLWidget.NoPartialUpdate)
 
-        # Define video controls
-        self.video_controls = VideoControls(main_window=self.main_window, parent=self, status=self.main_window.qtstatus)
+        # # Define video controls
+        # self.video_controls = VideoControls(main_window=self.main_window, parent=self, status=self.main_window.qtstatus)
 
-        # Hide video_controls
-        self.video_controls.hide()
+        # # Hide video_controls
+        # self.video_controls.hide()
 
-        # Define timer
-        self.timer = QTimer()
-        self.timer.setInterval(5000)
-        self.timer.timeout.connect(self.video_controls.hide)
-        self.timer.timeout.connect(self.main_window.nav_bar.conditionalHide)
+        # # Define timer
+        # self.timer = QTimer()
+        # self.timer.setInterval(5000)
+        # self.timer.timeout.connect(self.video_controls.hide)
+        # self.timer.timeout.connect(self.main_window.nav_bar.conditionalHide)
 
         # Setup other signals
         #self.qtstatus.file_loadedChanged.connect(self._cycle_show)
@@ -114,16 +111,16 @@ class MpvDisplay(QOpenGLWidget):
         if self.ctx:
             self.ctx.render()
 
-    def mouseMoveEvent(self, event: QMouseEvent):
-        self.video_controls.show()
-        self.main_window.nav_bar.show()
-        if self.main_window.status.playing:
-            self.timer.start()
-        return super().mouseMoveEvent(event)
+    # def mouseMoveEvent(self, event: QMouseEvent):
+    #     self.video_controls.show()
+    #     self.main_window.nav_bar.show()
+    #     if self.main_window.status.playing:
+    #         self.timer.start()
+    #     return super().mouseMoveEvent(event)
         
-    def resizeEvent(self, e):
-        self.video_controls.setGeometry(self.rect())
-        return super().resizeEvent(e)
+    # def resizeEvent(self, e):
+    #     self.video_controls.setGeometry(self.rect())
+    #     return super().resizeEvent(e)
 
     def closeEvent(self, event) -> None:
         self.makeCurrent()
@@ -152,11 +149,9 @@ class MpvControls():
 
     def play_all(self) -> None:
         try:
-            self._player.play(self.stream.video_url)
-            self._player.wait_until_playing()
-            self._player.audio_add(self.stream.audio_url)
-        except AttributeError:
-            self._player.play(self.stream.video_url)
+            self.stream.played_all = False
+            self._player.play(self.stream.url)
+            self.stream.played_all = True
         except AttributeError:
             pass
     
@@ -185,7 +180,7 @@ class MpvControls():
             self._player.command('seek', val, 'relative')
     
     def terminate(self) -> None:
-        self._controls.terminate()
+        self._player.terminate()
 
     def initalize_media(self, stream: MediaStream) -> None:
         self.stop()

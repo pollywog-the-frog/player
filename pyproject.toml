@@ -22,6 +22,11 @@ package = true
 [tool.uv.sources]
 yt-dlp = { git = "https://github.com/yt-dlp/yt-dlp.git" }
 
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.22.2",
+]
+
 [project.scripts]
 Player = "Player.__main__:main"
 

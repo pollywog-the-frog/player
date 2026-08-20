@@ -31,23 +31,23 @@ NavButton {
 }
 
 PlayPauseButton {
-    background-color: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 30, 0.65);
     border-radius: 35px;
     padding: none;
 }
 
 PlayPauseButton:hover {
-    background-color: rgba(37, 37, 37, 0.8);
+    background-color: rgba(37, 37, 37, 0.65);
 }
 
 AbstractSkipButton {
-    background-color: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 30, 0.65);
     border-radius: 26.25px;
     padding: none;
 }
 
 AbstractSkipButton:hover {
-    background-color: rgba(37, 37, 37, 0.8);
+    background-color: rgba(37, 37, 37, 0.65);
 }
 
 QLineEdit {
@@ -83,7 +83,16 @@ QSlider::sub-page:horizontal {
 }
 
 VideoControlBar {
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgba(24, 24, 24, 0.1), stop:0.1 rgba(24, 24, 24, 0.5), stop:0.5 rgb(24, 24, 24), stop:0.9 rgba(24, 24, 24, 0.5), stop:1 rgba(24, 24, 24, 0.1));
+    background: qlineargradient(
+        x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0    rgba(30, 30, 30, 0.00),
+        stop: 0.12 rgba(30, 30, 30, 0.18),
+        stop: 0.25 rgba(30, 30, 30, 0.42),
+        stop: 0.50 rgba(30, 30, 30, 0.65),
+        stop: 0.75 rgba(30, 30, 30, 0.42),
+        stop: 0.88 rgba(30, 30, 30, 0.18),
+        stop: 1    rgba(30, 30, 30, 0.00)
+    );
 }
 
 QFrame#display_frame[is_min_size='true'] {
